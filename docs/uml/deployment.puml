@@ -1,0 +1,85 @@
+@startuml Excusas Shark - Deployment Diagram
+!define CONTAINER_COLOR #87CEEB
+!define SERVICE_COLOR #FFD700
+
+node "Developer Machine" as DevMachine {
+    component "Maven" as Maven
+    component "JDK 17" as JDK
+    component "H2 Console\n(localhost:8080/h2-console)" as H2Console
+}
+
+node "Docker Container" as DockerContainer #CONTAINER_COLOR {
+    component "Alpine Base Image" as Alpine
+    package "Build Stage (Maven)" {
+        component "Maven Build" as MavenBuild
+    }
+    package "Runtime Stage (Java 17 Slim)" {
+        component "Spring Boot Application" as App
+        component "Embedded Tomcat\n(Port 8080)" as Tomcat
+        database "H2 In-Memory DB" as InMemoryDB
+    }
+    
+    App --> Tomcat : runs on
+    Tomcat --> InMemoryDB : uses
+}
+
+node "External Services" as External #SERVICE_COLOR {
+    component "GitHub" as GitHub
+    component "DockerHub" as DockerHub
+    component "Maven Central\nRepository" as MavenRepo
+}
+
+' Local Development Flow
+DevMachine --> Maven : runs
+Maven --> JDK : uses
+Maven --> MavenRepo : downloads dependencies
+Maven --> MavenBuild : builds project
+
+' Docker Build Process
+MavenBuild --> App : creates jar
+Alpine --> DockerContainer : base image
+App --> Docker: containerizes
+
+' Deployment Flow
+Docker --> DockerHub : publishes image
+App --> Tomcat : runs embedded
+H2Console --> InMemoryDB : connects
+
+' External Connections
+GitHub --> Maven : source code
+GitHub --> DockerHub : registry
+MavenRepo --> Maven : dependencies
+
+node "Cloud Deployment (Optional)" as Cloud #SERVICE_COLOR {
+    container "Kubernetes/Docker Compose" as K8s
+    container "Load Balancer" as LB
+}
+
+DockerHub -.-> K8s : pulls image
+K8s --> LB : routes
+
+' Annotations
+note right of Alpine
+    **Multistage Build**
+    1. Build Stage: Maven compile
+    2. Runtime Stage: Slim Java 17
+    (Reduces image size)
+end note
+
+note right of H2Console
+    **Development**
+    H2 Console for DB access
+    URL: jdbc:h2:mem:excusasdb
+end note
+
+note right of Cloud
+    **Optional Deployment**
+    For production scenarios
+end note
+
+legend right
+    Solid lines: Direct execution/data flow
+    Dotted lines: Optional/future deployment
+endlegend
+
+@enduml

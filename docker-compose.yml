@@ -1,0 +1,67 @@
+version: '3.9'
+
+services:
+  # Aplicación Excusas Shark API
+  excusas-shark-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: excusas-shark-api
+    ports:
+      - "8080:8080"
+    environment:
+      - JAVA_OPTS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:h2:mem:excusasdb
+      - SPRING_H2_CONSOLE_ENABLED=true
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - excusas-network
+    restart: unless-stopped
+
+  # Contenedor opcional para desarrollo con H2 Console expuesto
+  h2-console:
+    image: schickling/h2-console
+    container_name: excusas-h2-console
+    ports:
+      - "8082:8082"
+    environment:
+      - H2_OPTIONS=-web -webAllowOthers -tcp -tcpAllowOthers
+      - H2_DATA=/data
+    volumes:
+      - h2-data:/data
+    networks:
+      - excusas-network
+    depends_on:
+      - excusas-shark-api
+    restart: unless-stopped
+    profiles:
+      - dev
+
+networks:
+  excusas-network:
+    driver: bridge
+
+volumes:
+  h2-data:
+    driver: local
+
+# Instrucciones de uso:
+# 1. Construir imagen:    docker-compose build
+# 2. Ejecutar contenedor: docker-compose up
+# 3. Ejecutar con H2:     docker-compose --profile dev up
+# 4. Ver logs:            docker-compose logs -f
+# 5. Detener:             docker-compose down
+# 6. Limpiar:             docker-compose down -v
+#
+# URLs:
+# - API:                  http://localhost:8080
+# - Swagger UI:           http://localhost:8080/swagger-ui.html
+# - API Docs:             http://localhost:8080/api-docs
+# - Health:               http://localhost:8080/health
+# - H2 Console (dev):     http://localhost:8082

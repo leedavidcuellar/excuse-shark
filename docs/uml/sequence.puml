@@ -1,0 +1,69 @@
+@startuml Excusas Shark - Sequence Diagram
+title Flujo de Generación de Excusa UltraShark
+
+participant Client as C
+participant ExcuseController as EC
+participant ExcuseGeneratorService as EGS
+participant FragmentService as FS
+participant MemeService as MS
+participant LawService as LS
+participant FragmentRepository as FR
+participant MemeRepository as MR
+participant LawRepository as LR
+participant ExcuseRepository as ER
+
+C -> EC: GET /api/excuses/ultra
+
+EC -> EGS: generateUltraSharkExcuse()
+
+EGS -> FS: getRandomFragment(CONTEXTO)
+FS -> FR: findByType(CONTEXTO)
+FR --> FS: List<Fragment>
+FS -> FS: selectRandomFragment()
+FS --> EGS: Fragment
+
+EGS -> FS: getRandomFragment(CAUSA)
+FS -> FR: findByType(CAUSA)
+FR --> FS: List<Fragment>
+FS -> FS: selectRandomFragment()
+FS --> EGS: Fragment
+
+EGS -> FS: getRandomFragment(CONSECUENCIA)
+FS -> FR: findByType(CONSECUENCIA)
+FR --> FS: List<Fragment>
+FS -> FS: selectRandomFragment()
+FS --> EGS: Fragment
+
+EGS -> FS: getRandomFragment(RECOMENDACION)
+FS -> FR: findByType(RECOMENDACION)
+FR --> FS: List<Fragment>
+FS -> FS: selectRandomFragment()
+FS --> EGS: Fragment
+
+EGS -> EGS: composeExcuse(contexto, causa, consecuencia, recomendacion)
+
+EGS -> MS: getRandomMeme()
+MS -> MR: findByActiveTrue()
+MR --> MS: List<Meme>
+MS -> MS: selectRandomMeme()
+MS --> EGS: Meme
+
+EGS -> LS: getRandomLaw()
+LS -> LR: findByActiveTrue()
+LR --> LS: List<Law>
+LS -> LS: selectRandomLaw()
+LS --> EGS: Law
+
+EGS -> EGS: extractMemeAndLawText()
+
+EGS -> ER: save(Excuse)
+ER --> EGS: Excuse (saved with ID)
+
+EGS -> EGS: mapToUltraSharkDTO()
+
+EGS --> EC: UltraSharkExcuseDTO
+EC --> C: ResponseEntity<UltraSharkExcuseDTO> (200 OK)
+
+C -> C: Display UltraShark Excuse + Meme + Law
+
+@enduml

@@ -1,0 +1,9 @@
+[
+  {"type":"MURPHY","content":"Si algo puede salir mal, saldrá mal... justo antes del deploy de producción un viernes a las 17hs","author":"Murphy (versión DevOps)","active":true},
+  {"type":"HOFSTADTER","content":"Siempre toma más tiempo del estimado, incluso cuando tenés en cuenta la Ley de Hofstadter y agregás un 30% de buffer","author":"Douglas Hofstadter (adaptado por Scrum Master)","active":true},
+  {"type":"PARKINSON","content":"El trabajo se expande hasta llenar el tiempo disponible para su completado. Si tenés 2 semanas para una tarea de 2 días, usarás las 2 semanas","author":"Cyril Northcote Parkinson","active":true},
+  {"type":"CONWAY","content":"La estructura de tu software va a replicar la estructura de comunicación de tu organización, incluyendo los silos y la falta de integración entre equipos","author":"Melvin Conway","active":true},
+  {"type":"POSTEL","content":"Sé liberal en lo que aceptás de otros servicios y conservador en lo que enviás. Igual todos mandan JSONs mal formados sin validación","author":"Jon Postel (ley de robustez)","active":true},
+  {"type":"BROOKS","content":"Agregar desarrolladores a un proyecto retrasado lo hace aún más tarde. Los 9 developers no pueden hacer un bebé en 1 mes","author":"Fred Brooks (The Mythical Man-Month)","active":true},
+  {"type":"WIRTH","content":"El software se vuelve más lento más rápido de lo que el hardware se vuelve más rápido. Tu app de React usa más RAM que todo Windows 95","author":"Niklaus Wirth","active":true}
+]

@@ -1,0 +1,9 @@
+[
+  {"text":"¿Un bug en producción? Era una feature no documentada, no me alcanzó el tiempo para el README","author":"Dev Argentino Promedio","source":"Slack #random","category":"dev-humor","active":true},
+  {"text":"El código funciona en mi máquina, debe ser un problema de infraestructura... o de la VM de QA que tiene Java 8","author":"Senior que entró ayer","source":"Stand-up Meeting","category":"excuses","active":true},
+  {"text":"No es un memory leak, es una estrategia de precaching agresivo para mejorar performance","author":"Backend Developer","source":"Code Review Comment","category":"optimizations","active":true},
+  {"text":"El microservicio no está caído, está en modo de mantenimiento preventivo no programado","author":"DevOps Team","source":"Incident Channel","category":"operations","active":true},
+  {"text":"No me llegó el mail del deploy, debe estar en el spam. Igual iba a hacerlo mañana porque hoy es viernes","author":"Tech Lead","source":"Retrospective","category":"communication","active":true},
+  {"text":"El sistema no es lento, es que el usuario no entiende el concepto de procesamiento asíncrono con eventual consistency","author":"Solution Architect","source":"Client Meeting","category":"architecture","active":true},
+  {"text":"No hice los unit tests porque estoy esperando que el framework de testing que eligió el equipo madure un poco más","author":"Full Stack Developer","source":"Sprint Review","category":"testing","active":true}
+]

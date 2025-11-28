@@ -1,0 +1,113 @@
+@startuml Excusas Shark - Components Diagram
+!define COMPONENT_COLOR #87CEEB
+!define API_COLOR #FFD700
+!define DB_COLOR #FF6347
+
+package "Excusas Shark API" {
+    
+    package "Presentation Layer (Adapters de Entrada)" #API_COLOR {
+        component "HTTP Controllers" as Controllers {
+            [ExcuseController]
+            [FragmentController]
+            [HealthController]
+        }
+        component "OpenAPI/Swagger" as Swagger
+        Controllers --> Swagger : documenta
+    }
+
+    package "API Contracts (DTOs)" #COMPONENT_COLOR {
+        component "Request DTOs" as ReqDTOs {
+            [FragmentRequestDTO]
+        }
+        component "Response DTOs" as RespDTOs {
+            [FragmentResponseDTO]
+            [ExcuseResponseDTO]
+            [UltraSharkExcuseDTO]
+            [MemeResponseDTO]
+            [LawResponseDTO]
+        }
+    }
+
+    package "Domain Layer (Core Logic)" #COMPONENT_COLOR {
+        component "Services" as Services {
+            [ExcuseGeneratorService]
+            [FragmentService]
+            [MemeService]
+            [LawService]
+        }
+        component "Domain Models (Entities)" as Models {
+            [Fragment]
+            [Meme]
+            [Law]
+            [Excuse]
+            [Enums]
+        }
+        component "Mappers" as Mappers {
+            [FragmentMapper]
+            [ExcuseMapper]
+            [MemeMapper]
+            [LawMapper]
+        }
+    }
+
+    package "Persistence Layer (Adapters de Salida)" #COMPONENT_COLOR {
+        component "Repositories (JPA)" as Repos {
+            [FragmentRepository]
+            [MemeRepository]
+            [LawRepository]
+            [ExcuseRepository]
+        }
+    }
+
+    package "Configuration" #COMPONENT_COLOR {
+        component "Spring Boot Configuration" as Config {
+            [OpenAPIConfig]
+            [DataLoaderConfig]
+            [application.properties]
+        }
+    }
+}
+
+database "H2 In-Memory Database" as H2DB #DB_COLOR {
+    table "fragments" as frag_table
+    table "memes" as meme_table
+    table "laws" as law_table
+    table "excuses" as excuse_table
+}
+
+' Relationships - HTTP Flow
+Controllers --> ReqDTOs : uses
+Controllers --> RespDTOs : returns
+Controllers --> Services : calls
+
+' Relationships - Domain Layer
+Services --> Models : works with
+Services --> Mappers : uses
+Mappers --> ReqDTOs : converts from
+Mappers --> RespDTOs : converts to
+
+' Relationships - Persistence
+Repos --> H2DB : persists/retrieves
+Services --> Repos : uses
+
+' Configuration Flow
+Config --> Services : initializes
+Config --> H2DB : loads data
+
+' Hexagonal Architecture Annotations
+note right of Controllers
+    **Hexagon Port**
+    (Input/HTTP)
+end note
+
+note right of Repos
+    **Hexagon Port**
+    (Output/Persistence)
+end note
+
+note right of Services
+    **Core Domain**
+    Business Logic
+end note
+
+@enduml

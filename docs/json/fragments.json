@@ -1,0 +1,14 @@
+[
+  {"type":"CONTEXTO","text":"Servicio de autenticación sin pruebas de carga","source":"Jira-1234","category":"security","active":true},
+  {"type":"CONTEXTO","text":"Microservicio de pagos con 3 años de legacy code","source":"GitHub Issues","category":"debt","active":true},
+  {"type":"CONTEXTO","text":"Base de datos PostgreSQL sin índices en tablas de log","source":"DBA Team","category":"performance","active":true},
+  {"type":"CAUSA","text":"Cache Redis no invalida entradas expiradas automáticamente","source":"Architecture Review","category":"infrastructure","active":true},
+  {"type":"CAUSA","text":"Frontend genera 150 llamadas  API por cada click del usuario","source":"Performance Audit","category":"design","active":true},
+  {"type":"CAUSA","text":"Servicio externo de geolocalización tiene SLA de 99% pero cae 5 veces al mes","source":"Vendor Report","category":"dependencies","active":true},
+  {"type":"CONSECUENCIA","text":"Tiempo de respuesta promedio supera los 3 segundos en horario pico","source":"Monitoring Dashboard","category":"latency","active":true},
+  {"type":"CONSECUENCIA","text":"Base de datos consume 87% de memoria RAM constantemente","source":"CloudWatch","category":"resources","active":true},
+  {"type":"CONSECUENCIA","text":"Costo mensual de AWS subió 340% en el último trimestre","source":"Finance Report","category":"budget","active":true},
+  {"type":"RECOMENDACION","text":"Implementar circuit breaker con Resilience4j y timeout de 500ms","source":"Tech Lead","category":"reliability","active":true},
+  {"type":"RECOMENDACION","text":"Agregar índices compuestos en columnas user_id y timestamp","source":"Database Architect","category":"optimization","active":true},
+  {"type":"RECOMENDACION","text":"Refactorizar a arquitectura event-driven con Kafka para desacoplar componentes","source":"Solution Architect","category":"architecture","active":true}
+]

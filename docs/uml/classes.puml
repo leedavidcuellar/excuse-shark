@@ -1,0 +1,239 @@
+@startuml Excusas Shark - Class Diagram
+!define ABSTRACT_COLOR #FFD700
+!define ENTITY_COLOR #87CEEB
+!define DTO_COLOR #90EE90
+!define SERVICE_COLOR #FFA07A
+!define CONTROLLER_COLOR #DDA0DD
+
+' Models/Entities
+entity Fragment <<Entity>> #ENTITY_COLOR {
+    - id: Long
+    - type: FragmentType
+    - text: String
+    - source: String
+    - category: String
+    - createdAt: LocalDateTime
+    - updatedAt: LocalDateTime
+}
+
+entity Meme <<Entity>> #ENTITY_COLOR {
+    - id: Long
+    - text: String
+    - author: String
+    - source: String
+    - category: String
+    - active: boolean
+    - createdAt: LocalDateTime
+    - updatedAt: LocalDateTime
+}
+
+entity Law <<Entity>> #ENTITY_COLOR {
+    - id: Long
+    - type: LawType
+    - content: String
+    - author: String
+    - active: boolean
+    - createdAt: LocalDateTime
+    - updatedAt: LocalDateTime
+}
+
+entity Excuse <<Entity>> #ENTITY_COLOR {
+    - id: Long
+    - contexto: String
+    - causa: String
+    - consecuencia: String
+    - recomendacion: String
+    - meme: String
+    - ley: String
+    - roleTarget: RoleType
+    - createdAt: LocalDateTime
+}
+
+' Enums
+enum FragmentType <<Enumeration>> #FFE4B5 {
+    CONTEXTO
+    CAUSA
+    CONSECUENCIA
+    RECOMENDACION
+}
+
+enum RoleType <<Enumeration>> #FFE4B5 {
+    DEV
+    QA
+    DEVOPS
+    PM
+    ARCHITECT
+    DBA
+}
+
+enum LawType <<Enumeration>> #FFE4B5 {
+    MURPHY
+    HOFSTADTER
+    DILBERT
+    DEVOPS
+    DEVELOPER
+}
+
+' DTOs
+class FragmentRequestDTO #DTO_COLOR {
+    - type: String
+    - text: String
+    - source: String
+    - category: String
+}
+
+class FragmentResponseDTO #DTO_COLOR {
+    - id: Long
+    - type: FragmentType
+    - text: String
+    - source: String
+    - category: String
+    - createdAt: LocalDateTime
+    - updatedAt: LocalDateTime
+}
+
+class ExcuseResponseDTO #DTO_COLOR {
+    - id: Long
+    - contexto: String
+    - causa: String
+    - consecuencia: String
+    - recomendacion: String
+    - meme: String
+    - ley: String
+    - roleTarget: RoleType
+    - createdAt: LocalDateTime
+}
+
+class UltraSharkExcuseDTO #DTO_COLOR {
+    - excusa: ExcuseResponseDTO
+    - meme: String
+    - ley: String
+}
+
+' Services
+class FragmentService #SERVICE_COLOR {
+    - fragmentRepository: FragmentRepository
+    + create(Fragment): Fragment
+    + createFromDTO(FragmentRequestDTO): FragmentResponseDTO
+    + getById(Long): FragmentResponseDTO
+    + getAll(): List<FragmentResponseDTO>
+    + getByType(String): List<FragmentResponseDTO>
+    + getActive(): List<FragmentResponseDTO>
+    + update(Long, FragmentRequestDTO): FragmentResponseDTO
+    + delete(Long): boolean
+    + getRandomFragment(FragmentType): Fragment
+}
+
+class ExcuseGeneratorService #SERVICE_COLOR {
+    - excuseRepository: ExcuseRepository
+    - fragmentService: FragmentService
+    - memeService: MemeService
+    - lawService: LawService
+    + generateRandomExcuse(): ExcuseResponseDTO
+    + generateExcuseWithMeme(): ExcuseResponseDTO
+    + generateExcuseWithLaw(): ExcuseResponseDTO
+    + generateUltraSharkExcuse(): UltraSharkExcuseDTO
+    + generateExcuseForRole(RoleType): ExcuseResponseDTO
+    + getDailyExcuse(): ExcuseResponseDTO
+    + generateExcuseWithSeed(long): ExcuseResponseDTO
+    + getAll(): List<ExcuseResponseDTO>
+    + getById(Long): ExcuseResponseDTO
+}
+
+class MemeService #SERVICE_COLOR {
+    - memeRepository: MemeRepository
+    + create(Meme): Meme
+    + getById(Long): MemeResponseDTO
+    + getAll(): List<MemeResponseDTO>
+    + getActive(): List<MemeResponseDTO>
+    + getRandomMeme(): Meme
+    + delete(Long): boolean
+}
+
+class LawService #SERVICE_COLOR {
+    - lawRepository: LawRepository
+    + create(Law): Law
+    + getById(Long): LawResponseDTO
+    + getAll(): List<LawResponseDTO>
+    + getActive(): List<LawResponseDTO>
+    + getByType(LawType): List<LawResponseDTO>
+    + getRandomLaw(): Law
+    + delete(Long): boolean
+}
+
+' Controllers
+class ExcuseController #CONTROLLER_COLOR {
+    - excuseGeneratorService: ExcuseGeneratorService
+    + generateRandomExcuse(): ResponseEntity<ExcuseResponseDTO>
+    + getDailyExcuse(): ResponseEntity<ExcuseResponseDTO>
+    + generateExcuseWithMeme(): ResponseEntity<ExcuseResponseDTO>
+    + generateExcuseWithLaw(): ResponseEntity<ExcuseResponseDTO>
+    + generateUltraSharkExcuse(): ResponseEntity<UltraSharkExcuseDTO>
+    + generateExcuseForRole(String): ResponseEntity<ExcuseResponseDTO>
+    + getAllExcuses(): ResponseEntity<List<ExcuseResponseDTO>>
+    + getExcuseById(Long): ResponseEntity<ExcuseResponseDTO>
+}
+
+class FragmentController #CONTROLLER_COLOR {
+    - fragmentService: FragmentService
+    + getAllFragments(): ResponseEntity<List<FragmentResponseDTO>>
+    + getFragmentById(Long): ResponseEntity<FragmentResponseDTO>
+    + getFragmentsByType(String): ResponseEntity<List<FragmentResponseDTO>>
+    + getActiveFragments(): ResponseEntity<List<FragmentResponseDTO>>
+    + createFragment(FragmentRequestDTO): ResponseEntity<FragmentResponseDTO>
+    + updateFragment(Long, FragmentRequestDTO): ResponseEntity<FragmentResponseDTO>
+    + deleteFragment(Long): ResponseEntity<Void>
+}
+
+class HealthController #CONTROLLER_COLOR {
+    + health(): ResponseEntity<Map<String, Object>>
+}
+
+' Repositories
+interface FragmentRepository #ABSTRACT_COLOR {
+    + findByType(FragmentType): List<Fragment>
+    + findByTypeAndActiveTrue(FragmentType): List<Fragment>
+    + findByCategory(String): List<Fragment>
+    + findByActiveTrue(): List<Fragment>
+}
+
+interface MemeRepository #ABSTRACT_COLOR {
+    + findByActiveTrue(): List<Meme>
+    + findByCategory(String): List<Meme>
+}
+
+interface LawRepository #ABSTRACT_COLOR {
+    + findByType(LawType): List<Law>
+    + findByActiveTrue(): List<Law>
+}
+
+interface ExcuseRepository #ABSTRACT_COLOR {
+    + findByActiveTrue(): List<Excuse>
+    + findByRoleTarget(RoleType): List<Excuse>
+    + findByCreatedAtAfter(LocalDateTime): List<Excuse>
+}
+
+' Relationships
+Fragment --> FragmentType
+Meme --|> "1" Meme
+Law --> LawType
+Excuse --> RoleType
+Excuse o-- Fragment : composes
+
+FragmentRequestDTO ..> Fragment : converts
+FragmentResponseDTO ..> Fragment : converts
+ExcuseResponseDTO ..> Excuse : converts
+UltraSharkExcuseDTO --> ExcuseResponseDTO : contains
+
+FragmentService --> FragmentRepository : uses
+ExcuseGeneratorService --> ExcuseRepository : uses
+ExcuseGeneratorService --> FragmentService : uses
+ExcuseGeneratorService --> MemeService : uses
+ExcuseGeneratorService --> LawService : uses
+MemeService --> MemeRepository : uses
+LawService --> LawRepository : uses
+
+ExcuseController --> ExcuseGeneratorService : uses
+FragmentController --> FragmentService : uses
+
+@enduml
