@@ -18,7 +18,7 @@ class OpenAPIConfigTest {
         assertEquals("Excusas Shark API", api.getInfo().getTitle());
         assertEquals("1.0.0", api.getInfo().getVersion());
         assertNotNull(api.getInfo().getContact());
-        assertEquals("Accenture Tech Team", api.getInfo().getContact().getName());
+        assertEquals("Lee Cuellar", api.getInfo().getContact().getName());
         assertNotNull(api.getInfo().getLicense());
         assertEquals("MIT License", api.getInfo().getLicense().getName());
     }

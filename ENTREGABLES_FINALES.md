@@ -549,7 +549,7 @@ git push --tags
 
 ### Verificación en GitHub
 
-1. Ir a: `https://github.com/accenture/excusas-shark/releases`
+1. Ir a: `https://github.com/lee-cuellar-acc/excusas-shark/releases`
 2. Verificar que aparece "v1.0.0"
 3. Validar mensaje del release
 

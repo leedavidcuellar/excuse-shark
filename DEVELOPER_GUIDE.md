@@ -551,10 +551,10 @@ mvn clean package
 docker build -t excusas-shark:1.0.0 .
 
 # Tag para registry
-docker tag excusas-shark:1.0.0 docker.io/accenture/excusas-shark:1.0.0
+docker tag excusas-shark:1.0.0 docker.io/lee-cuellar-acc/excusas-shark:1.0.0
 
-# Push a registry
-docker push docker.io/accenture/excusas-shark:1.0.0
+# Push to registry
+docker push docker.io/lee-cuellar-acc/excusas-shark:1.0.0
 ```
 
 ### Deploy con Docker Compose

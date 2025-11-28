@@ -81,7 +81,7 @@ ollama serve
 
 ```bash
 # Clonar repositorio
-git clone https://github.com/accenture/excusas-shark.git
+git clone https://github.com/lee-cuellar-acc/excusas-shark.git
 cd excusas-shark
 
 # Compilar

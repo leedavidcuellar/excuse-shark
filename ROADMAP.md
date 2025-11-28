@@ -176,7 +176,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: docker.io/accenture/excusas-shark:1.0.0
+        image: docker.io/lee-cuellar-acc/excusas-shark:1.0.0
 ```
 
 #### 6.2 CI/CD Pipeline

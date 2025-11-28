@@ -23,9 +23,9 @@ public class OpenAPIConfig {
                         .description("🦈 API para generar excusas técnicas argentinas. " +
                                 "Del Mojarrita (simple) al White Shark (ULTRA con meme + ley)")
                         .contact(new Contact()
-                                .name("Accenture Tech Team")
-                                .url("https://www.accenture.com")
-                                .email("tech@accenture.com"))
+                                .name("Lee Cuellar")
+                                .url("https://github.com/lee-cuellar-acc")
+                                .email("lee.cuellar@example.com"))
                         .license(new License()
                                 .name("MIT License")
                                 .url("https://opensource.org/licenses/MIT")));
