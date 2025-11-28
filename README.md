@@ -782,9 +782,8 @@ Contribuciones bienvenidas. Por favor:
 
 ## 📞 Contacto
 
-- **Equipo**: Accenture Tech Team
-- **Email**: tech@accenture.com
-- **Website**: https://www.accenture.com
+- **Equipo**:  Lee Cuellar - Tech Team
+- **Email**: leecordar@hotmail.com
 
 ---
 
