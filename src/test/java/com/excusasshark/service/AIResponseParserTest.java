@@ -13,13 +13,26 @@ class AIResponseParserTest {
 
     // ========== Tests para cleanMarkdownWrapper ==========
 
-    @ParameterizedTest
-    @CsvSource(delimiterString = "|", value = {
-        "```json\n{\"test\": \"value\"}\n```|{\"test\": \"value\"}",
-        "```\n{\"test\": \"value\"}\n```|{\"test\": \"value\"}",
-        "{\"test\": \"value\"}|{\"test\": \"value\"}"
-    })
-    void testCleanMarkdownWrapper_VariosFormatos_RemueveCorrectamente(String input, String expected) {
+    @Test
+    void testCleanMarkdownWrapper_ConJsonWrapper_RemueveCorrectamente() {
+        String input = "```json\n{\"test\": \"value\"}\n```";
+        String expected = "{\"test\": \"value\"}";
+        String result = AIResponseParser.cleanMarkdownWrapper(input);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void testCleanMarkdownWrapper_ConBackticksSimples_RemueveCorrectamente() {
+        String input = "```\n{\"test\": \"value\"}\n```";
+        String expected = "{\"test\": \"value\"}";
+        String result = AIResponseParser.cleanMarkdownWrapper(input);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void testCleanMarkdownWrapper_SinWrapper_RetornaIgual() {
+        String input = "{\"test\": \"value\"}";
+        String expected = "{\"test\": \"value\"}";
         String result = AIResponseParser.cleanMarkdownWrapper(input);
         assertEquals(expected, result);
     }
